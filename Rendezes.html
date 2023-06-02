@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rendezési algoritmusok</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#">Rendezési algoritmusok</a>
+    </nav>
+  </header>
+
+  <main class="container mt-5">
+    <h1>Rendezési algoritmusok</h1>
+    <p>A rendezési algoritmusok olyan algoritmusok, amelyek rendezett formába hozzák a bemeneti adatokat. A rendezési algoritmusok különböző módszerekkel dolgoznak, és különböző időkomplexitással rendelkeznek.</p>
+
+    <h2>Típusok</h2>
+    <ul>
+      <li>Buborékrendezés</li>
+      <li>Kiválasztásos rendezés</li>
+      <li>Insertion rendezés</li>
+      <li>Gyorsrendezés</li>
+      <li>Merge rendezés</li>
+      <li>Heap rendezés</li>
+    </ul>
+
+    <h2>Rendezési algoritmusok működése</h2>
+    <p>Minden rendezési algoritmusnak megvan a saját működése és logikája, de az általános cél az, hogy a bemeneti adatokat rendezett formába hozza.</p>
+
+    <h2>Algoritmusok összehasonlítása</h2>
+    <p>A különböző rendezési algoritmusoknak eltérő időkomplexitásuk van. Például a buborékrendezés és a kiválasztásos rendezés négyzetes időkomplexitással rendelkezik, míg a gyorsrendezés logaritmikus időkomplexitással rendelkezik.</p>
+
+    <h2>Kísérletezés</h2>
+    <p>Az alábbiakban lehetőség van különböző rendezési algoritmusokkal kísérletezni a véletlenszerűen előállított adathalmazon:</p>
+
+    <div class="row">
+      <div class="col-md-6">
+        <h3>Tömb rendezése</h3>
+        <button class="btn btn-primary" onclick="sortArray()">Rendezés</button>
+        <ul id="arrayResult"></ul>
+      </div>
+      <div class="col-md-6">
+        <h3>Lista rendezése</h3>
+        <button class="btn btn-primary" onclick="sortList()">Rendezés</button>
+        <ul id="listResult"></ul>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script>
+
+    function sortArray() {
+      var array = generateRandomArray();
+      var startTime = performance.now();
+      quickSort(array, 0, array.length - 1);
+      var endTime = performance.now();
+      displayResult("arrayResult", array, endTime - startTime);
+    }
+
+    function sortList() {
+      var list = generateRandomList();
+      var startTime = performance.now();
+      selectionSort(list);
+      var endTime = performance.now();
+      displayResult("listResult", list, endTime - startTime);
+    }
+
+    function generateRandomArray() {
+      var array = [];
+      for (var i = 0; i < 100; i++) {
+        array.push(Math.floor(Math.random() * 1000));
+      }
+      return array;
+    }
+
+    function generateRandomList() {
+      var list = [];
+      for (var i = 0; i < 100; i++) {
+        list.push(Math.floor(Math.random() * 1000));
+      }
+      return list;
+    }
+    function quickSort(array, low, high) {
+      if (low < high) {
+        var pivotIndex = partition(array, low, high);
+        quickSort(array, low, pivotIndex - 1);
+        quickSort(array, pivotIndex + 1, high);
+      }
+    }
+
+    function partition(array, low, high) {
+      var pivot = array[high];
+      var i = low - 1;
+      for (var j = low; j < high; j++) {
+        if (array[j] < pivot) {
+          i++;
+          swap(array, i, j);
+        }
+      }
+      swap(array, i + 1, high);
+      return i + 1;
+    }
+
+    function selectionSort(list) {
+      var len = list.length;
+      for (var i = 0; i < len - 1; i++) {
+        var minIndex = i;
+        for (var j = i + 1; j < len; j++) {
+          if (list[j] < list[minIndex]) {
+            minIndex = j;
+          }
+        }
+        if (minIndex !== i) {
+          var temp = list[i];
+          list[i] = list[minIndex];
+          list[minIndex] = temp;
+        }
+      }
+    }
+
+    function displayResult(elementId, data, time) {
+      var element = document.getElementById(elementId);
+      element.innerHTML = "<li>Rendezett lista: " + data + "</li><li>Rendezési idő: " + time + " ms</li>";
+    }
+  </script>
+</body>
+</html>
